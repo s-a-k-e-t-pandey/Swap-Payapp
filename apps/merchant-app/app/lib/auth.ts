@@ -1,4 +1,4 @@
-import GitHubProvider from "next-auth/providers/github";
+import GoogleProvider from "next-auth/providers/google";
 import db from "@repo/db/client";
 import { AuthOptions } from "next-auth";
 import { JWT } from "next-auth/jwt";
@@ -17,12 +17,14 @@ declare module "next-auth" {
 
 export const authOptions: AuthOptions = {
     providers: [
-        GitHubProvider({
-            clientId: process.env.GITHUB_ID || "",
-            clientSecret: process.env.GITHUB_SECRET || "",
+        GoogleProvider({
+            clientId: process.env.GOOGLE_CLIENT_ID || "",
+            clientSecret: process.env.GOOGLE_CLIENT_SECRET || "",
             authorization: {
                 params: {
-                    scope: 'read:user user:email'
+                    prompt: "consent",
+                    access_type: "offline",
+                    response_type: "code"
                 }
             }
         })
@@ -42,11 +44,11 @@ export const authOptions: AuthOptions = {
                     create: {
                         email: user.email,
                         name: user.name || user.email.split('@')[0],
-                        auth_type: "Github"
+                        auth_type: "Google"
                     },
                     update: {
                         name: user.name || undefined,
-                        auth_type: "Github"
+                        auth_type: "Google"
                     }
                 });
 
