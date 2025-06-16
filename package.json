@@ -1,5 +1,5 @@
 {
-  "name": "Swap-PayApp",
+  "name": "paytm",
   "private": true,
   "scripts": {
     "build": "turbo build",
@@ -13,6 +13,8 @@
     "build:bank-webhook": "turbo build --filter=./apps/bank-webhook"
   },
   "devDependencies": {
+    "@repo/eslint-config": "*",
+    "@repo/typescript-config": "*",
     "prettier": "^3.2.5",
     "turbo": "^2.0.6",
     "typescript": "^5.4.5"
