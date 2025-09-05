@@ -14,16 +14,22 @@ export const createOnRampTransaction = async (provider: string, amount: number) 
     }
 
     const token = (Math.random() * 1000).toString()
-    
-    await db.onRampTransaction.create({
-        data: {
-            provider,
-            status: "Processing",
-            startTime: new Date(),
-            token,
-            userId: Number(session?.user?.id),
-            amount: amount * 100
-        }
+    await db.$transaction(async tx => {
+        const txn = await db.onRampTransaction.create({
+            data: {
+                provider,
+                status: "Processing",
+                startTime: new Date(),
+                token,
+                userId: (session?.user?.id),
+                amount: amount * 100
+            }
+        })
+        await tx.onRampTransactionOutbox.create({
+            data: {
+                onRampTxnId: txn.id
+            }
+        })
     })
 
     return {

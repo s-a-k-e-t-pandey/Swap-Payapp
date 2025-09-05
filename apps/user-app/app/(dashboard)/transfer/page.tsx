@@ -7,14 +7,14 @@ import authOptions from "../../lib/auth";
 
 const getBalance = async () => {
     const session = await getServerSession(authOptions)
-    const balance = await db.balance.findUnique({
+    const balance = await db.userAccount.findUnique({
         where: {
-            userId: Number(session?.user?.id)
+            userId: session?.user?.id
         }
     })
 
     return {
-        amount: balance?.amount || 0,
+        amount: balance?.balance || 0,
         locked: balance?.locked || 0
     }
 }
@@ -22,7 +22,7 @@ async function getOnRampTransactions() {
     const session = await getServerSession(authOptions);
     const txns = await db.onRampTransaction.findMany({
         where: {
-            userId: Number(session?.user?.id)
+            userId: session?.user?.id
         }
     });
     return txns.map(t => ({

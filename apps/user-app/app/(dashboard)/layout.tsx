@@ -8,9 +8,9 @@ export default function Layout({children}: {children: React.ReactNode}): JSX.Ele
         <div className="flex ">
             <div className="w-72 border-r border-slate-300 min-h-screen mr-4 pt-28">
                 <div>
-                    <Sidebaritem href={"/dashboard"} icon={<HomeIcon/>} title="Home"></Sidebaritem>
-                    <Sidebaritem href={"/transfer"} icon={<Transfer/>} title="Transfer"></Sidebaritem>
-                    <Sidebaritem href={"/transactions"} icon={<TransactionsIcon/>} title="Transactions"></Sidebaritem>
+                    <Sidebaritem href={"/dashboard"} icon={<RiHomeSmileLine />} title="Home"></Sidebaritem>
+                    <Sidebaritem href={"/transfer"} icon={<BiTransferAlt />} title="Transfer"></Sidebaritem>
+                    <Sidebaritem href={"/transactions"} icon={<FaClockRotateLeft />} title="Transactions"></Sidebaritem>
                     <Sidebaritem href={"/p2p"} icon={<P2PTransferIcon/>} title="P2P Transfer"></Sidebaritem>
                 </div>
             </div>
@@ -24,17 +24,3 @@ function P2PTransferIcon() {
       <path stroke-linecap="round" stroke-linejoin="round" d="m4.5 19.5 15-15m0 0H8.25m11.25 0v11.25" />
     </svg>
   }
-
-function HomeIcon(){
-    return <RiHomeSmileLine />
-    
-}
-
-function TransactionsIcon(){
-    return <FaClockRotateLeft />
-
-}
-
-function Transfer(){
-    return <BiTransferAlt />
-}

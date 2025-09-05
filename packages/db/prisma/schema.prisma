@@ -14,7 +14,7 @@ datasource db {
 }
 
 model User {
-  id                Int                 @id @default(autoincrement())
+  id                String              @id @default(uuid())
   email             String?             @unique
   name              String?
   number            String              @unique
@@ -26,7 +26,7 @@ model User {
 }
 
 model P2PTransfer {
-  id        Int      @id @default(autoincrement())
+  id        String   @id @default(uuid())
   amount    Int
   timeStamp DateTime
   fromUser  String
@@ -36,7 +36,7 @@ model P2PTransfer {
 }
 
 model Merchant {
-  id       Int               @id @default(autoincrement())
+  id       String            @id @default(uuid())
   name     String?
   phone    String?           @unique
   email    String            @unique
@@ -45,30 +45,37 @@ model Merchant {
 }
 
 model OnRampTransaction {
-  id        Int          @id @default(autoincrement())
-  status    OnRampStatus
-  token     String       @unique
-  provider  String
-  amount    Int
-  startTime DateTime
-  userId    Int
-  user      User         @relation(fields: [userId], references: [id])
+  id              String                   @id @default(uuid())
+  status          OnRampStatus
+  token           String                   @unique
+  provider        String
+  amount          Int
+  startTime       DateTime
+  userId          String
+  user            User                     @relation(fields: [userId], references: [id])
+  onRampTxnOutbox OnRampTransactionOutbox?
 }
 
 model UserAccount {
-  id      Int  @id @default(autoincrement())
-  userId  Int  @unique
-  balance Int  @default(0)
-  locked  Int  @default(0)
-  user    User @relation(fields: [userId], references: [id])
+  id      String @id @default(uuid())
+  userId  String @unique
+  balance Int    @default(0)
+  locked  Int    @default(0)
+  user    User   @relation(fields: [userId], references: [id])
 }
 
 model MerchantAccount {
-  id         Int      @id @default(autoincrement())
+  id         String   @id @default(uuid())
   balance    Int      @default(0)
   locked     Int      @default(0)
-  merchantId Int      @unique
+  merchantId String   @unique
   merchant   Merchant @relation(fields: [merchantId], references: [id])
+}
+
+model OnRampTransactionOutbox {
+  id          String            @id @default(uuid())
+  onRampTxnId String            @unique
+  onRampTxn   OnRampTransaction @relation(fields: [onRampTxnId], references: [id])
 }
 
 enum AuthType {

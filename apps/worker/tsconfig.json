@@ -1,0 +1,19 @@
+{
+  "compilerOptions": {
+    "target": "esnext",
+    "module": "nodenext",                
+    "moduleResolution": "nodenext",
+    "baseUrl": ".",
+    "paths": {
+      "@repo/zod/*": ["../zod/src/*"],
+      "@repo/db/*": ["../db/src/*"]
+    },
+    "esModuleInterop": true,
+    "skipLibCheck": true,
+    "strict": true,
+    "outDir": "dist",
+    "rootDir": "./src"
+  },
+  "include": ["src"],
+  "exclude": ["node_modules", "dist"]
+}

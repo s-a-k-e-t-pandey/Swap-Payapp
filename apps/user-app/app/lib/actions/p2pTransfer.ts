@@ -25,7 +25,7 @@ export async function p2pTransfer(to: string, amount: number) {
     await db.$transaction(async (tx) => {
         await tx.$queryRaw`SELECT * FROM "UserAccount" WHERE "userId"= ${from} FROM UPDATE`;
         const fromBalance = await tx.userAccount.findUnique({
-            where: { userId: Number(from) },
+            where: { userId: from },
           });
           if (!fromBalance || fromBalance.balance < amount) {
             throw new Error('Insufficient funds');
@@ -34,7 +34,7 @@ export async function p2pTransfer(to: string, amount: number) {
           await new Promise(r => setTimeout(r, 1000));
 
           await tx.userAccount.update({
-            where: { userId: Number(from) },
+            where: { userId: from },
             data: { balance: { decrement: amount } },
           });
 

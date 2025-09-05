@@ -6,7 +6,7 @@ export default async function() {
     const session = await getServerSession(authOptions)
     const txns = await db.onRampTransaction.findMany({
         where: {
-            userId: Number(session?.user?.id)
+            userId: session?.user?.id
         }
     })
 
