@@ -20,27 +20,28 @@ model User {
   number            String              @unique
   password          String
   OnRampTransaction OnRampTransaction[]
-  Balance           Balance[]
+  Account           UserAccount[]
   P2PsentTxns       P2PTransfer[]       @relation(name: "senderRelation")
   P2PreceivedTxns   P2PTransfer[]       @relation(name: "receiverRelation")
 }
 
 model P2PTransfer {
-  id         Int      @id @default(autoincrement())
-  amount     Int
-  timeStamp  DateTime
-  fromUser   String
-  toUser     String
-  sender     User     @relation(name: "senderRelation", fields: [fromUser], references: [number]) 
-  receiver   User     @relation(name: "receiverRelation", fields: [toUser], references: [number]) 
+  id        Int      @id @default(autoincrement())
+  amount    Int
+  timeStamp DateTime
+  fromUser  String
+  toUser    String
+  sender    User     @relation(name: "senderRelation", fields: [fromUser], references: [number])
+  receiver  User     @relation(name: "receiverRelation", fields: [toUser], references: [number])
 }
 
 model Merchant {
-  id        Int      @id @default(autoincrement())
-  name      String?
-  phone     String?   @unique
-  email     String   @unique
-  password  String
+  id       Int               @id @default(autoincrement())
+  name     String?
+  phone    String?           @unique
+  email    String            @unique
+  password String
+  account  MerchantAccount[]
 }
 
 model OnRampTransaction {
@@ -54,12 +55,20 @@ model OnRampTransaction {
   user      User         @relation(fields: [userId], references: [id])
 }
 
-model Balance {
-  id     Int  @id @default(autoincrement())
-  userId Int  @unique
-  amount Int
-  locked Int
-  user   User @relation(fields: [userId], references: [id])
+model UserAccount {
+  id      Int  @id @default(autoincrement())
+  userId  Int  @unique
+  balance Int  @default(0)
+  locked  Int  @default(0)
+  user    User @relation(fields: [userId], references: [id])
+}
+
+model MerchantAccount {
+  id         Int      @id @default(autoincrement())
+  balance    Int      @default(0)
+  locked     Int      @default(0)
+  merchantId Int      @unique
+  merchant   Merchant @relation(fields: [merchantId], references: [id])
 }
 
 enum AuthType {

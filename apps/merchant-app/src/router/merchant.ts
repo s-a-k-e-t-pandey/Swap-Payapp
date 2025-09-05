@@ -10,12 +10,20 @@ export const merchantRouter = Router();
 merchantRouter.post("/signup", async(req, res)=> {
     const {email, phone, password} = merchantValidation.parse(req.body);
     try {
-        await db.merchant.create({
-            data: {
-                email,
-                ...(phone ? { phone } : {}),
-                password
-            }
+        const merchant = await db.$transaction(async (tx) => {
+            const user = await db.merchant.create({
+                data: {
+                    email,
+                    ...(phone ? { phone } : {}),
+                    password
+                }
+            });
+            await tx.merchantAccount.create({
+                data: {
+                    merchantId: user.id
+                }
+            })
+            return user
         })
         res.status(200).json({msg: "Merchant created successfully"})
     }catch(e){

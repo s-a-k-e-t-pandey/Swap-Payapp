@@ -18,12 +18,12 @@ app.post('/hdfcWebhook', async(req, res) => {
     try { 
         await db.$transaction([
             // update your wallet balance 
-            db.balance.update({
+            db.userAccount.update({
                 where: {
                     userId: Number(userId)
                 },
                 data: {
-                    amount: {
+                    balance: {
                         increment: Number(amount)
                     }
                 }
